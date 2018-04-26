@@ -1,10 +1,11 @@
 <html>
     <head>
+        <meta charset="utf-8">
         <title>OpenFaaS Cloud Overview</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-        <meta charset="utf-8"> 
 
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
     </head>
 
 <body>
@@ -71,8 +72,12 @@
                 data = JSON.parse(data);
                 for(var i = 0; i < data.length; i++) {
                     var index = i;
+                    var item = data[index];
 
-                    var shortName = data[index].name;
+                    var since = new Date(parseInt(item.labels["Git-DeployTime"])*1000);
+                    var sinceDuration = moment(since).fromNow();
+
+                    var shortName = item.name;
                     if(shortName.indexOf("-") > -1) {
                         shortName = shortName.substr(shortName.indexOf("-") + 1);
                     }
@@ -82,9 +87,10 @@
                     if(prettyDomain.length) {
                         url = prettyDomain.replace("user", user).replace("function", shortName);
                     } else {
-                        url = baseURL + "/function/" + data[index].name;
+                        url = baseURL + "/function/" + item.name;
                     }
-                    $("#items").append('<tr onClick="siteClicked(this)" data-url="'+url+'"><td>'+shortName+'</td><td>'+data[index].labels["Git-Repo"]+'</td><td><a href="'+url+'">Link</a></td><td>'+data[index].image.split("-")[1]+'</td><td>'+data[index].labels["Git-DeployTime"]+'</td></tr>');
+
+                    $("#items").append('<tr onClick="siteClicked(this)" data-url="'+url+'"><td>'+shortName+'</td><td>'+item.labels["Git-Repo"]+'</td><td><a href="'+url+'">Link</a></td><td>'+item.image.split("-")[1]+'</td><td>'+sinceDuration+'</td></tr>');
                 }
             });
         });
