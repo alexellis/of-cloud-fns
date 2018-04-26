@@ -1,0 +1,94 @@
+<html>
+    <head>
+        <title>OpenFaaS Cloud Overview</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <meta charset="utf-8"> 
+
+    </head>
+
+<body>
+<div class="container">
+    <nav class="navbar navbar-inverse">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Your functions</a>
+            </div>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Home</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Functions</div>
+        <div class="panel-body">
+            <p>
+                Welcome <span id="username" />
+            </p>
+            <table class="table">
+                <thead>
+                    <tr>
+                    <th>Name</th>
+                    <th>Repo</th>
+                    <th>URL</th>
+                    <th>SHA</th>
+                    <th>Time built</th>
+                    </tr>
+                </thead>
+                <tbody id="items">
+                    <tr id="loading">
+                        <td>Loading...</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tbody>    
+            </table>
+        </div>
+    </div>
+
+    <p></p>
+
+    <p>
+        Powered by OpenFaaS
+    </p>
+
+    <script lang="javascript">
+        $(document).ready(function() {
+            // injected via server templates
+            var user = "{{.User}}";
+            var baseURL = "{{.PublicURL}}";
+            var prettyDomain = "{{.PrettyURL}}";
+
+            $("#username").text(user);
+
+            $.get("/function/list-functions?user="+user, function(data, status) {
+                $("#loading").remove();
+                
+
+                data = JSON.parse(data);
+                for(var i = 0; i < data.length; i++) {
+                    var index = i;
+
+                    var shortName = data[index].name;
+                    if(shortName.indexOf("-") > -1) {
+                        shortName = shortName.substr(shortName.indexOf("-") + 1);
+                    }
+
+                    var url;
+                   
+                    if(prettyDomain.length) {
+                        url = prettyDomain.replace("user", user).replace("function", shortName);
+                    } else {
+                        url = baseURL + "/function/" + data[index].name;
+                    }
+                    $("#items").append('<tr onClick="siteClicked(this)" data-url="'+url+'"><td>'+shortName+'</td><td>'+data[index].labels["Git-Repo"]+'</td><td><a href="'+url+'">Link</a></td><td>'+data[index].image.split("-")[1]+'</td><td>'+data[index].labels["Git-DeployTime"]+'</td></tr>');
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>

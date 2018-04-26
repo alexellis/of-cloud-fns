@@ -1,0 +1,14 @@
+provider:
+  name: faas
+  gateway: http://127.0.0.1:8080
+
+functions:
+  overview:
+    lang: go
+    handler: ./overview
+    image: overview
+    environment:
+      content_type: "text/html"
+      combine_output: "false"
+      public_url: "http://127.0.0.1:8080"
+      pretty_url: "https://user.get-faas.com/function"
