@@ -9,9 +9,10 @@ import (
 )
 
 type UserData struct {
-	User      string
-	PublicURL string
-	PrettyURL string
+	User           string
+	PublicURL      string
+	PrettyURL      string
+	QueryPrettyURL string
 }
 
 // Handle a serverless request
@@ -23,8 +24,9 @@ func Handle(req []byte) string {
 	}
 
 	userData1 := UserData{
-		PublicURL: os.Getenv("public_url"),
-		PrettyURL: os.Getenv("pretty_url"),
+		PublicURL:      os.Getenv("public_url"),
+		PrettyURL:      os.Getenv("pretty_url"),
+		QueryPrettyURL: os.Getenv("query_pretty_url"),
 	}
 
 	vals, _ := url.ParseQuery(os.Getenv("Http_Query"))

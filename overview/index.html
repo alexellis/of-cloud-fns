@@ -72,7 +72,7 @@
     <p></p>
 
     <p>
-        Powered by OpenFaaS
+        Powered by <a href="https://www.openfaas.com">OpenFaaS</a>
     </p>
 
     <script lang="javascript">
@@ -81,13 +81,18 @@
             var user = "{{.User}}";
             var baseURL = "{{.PublicURL}}";
             var prettyDomain = "{{.PrettyURL}}";
+            var queryPrettyURL = "{{.QueryPrettyURL}}";
 
             $("#username").text(user);
 
-            $.get("/function/list-functions?user="+user, function(data, status) {
+            var queryURL = "/function/list-functions?user="+user;
+            if(queryPrettyURL.length) {
+              queryURL = prettyDomain.replace("user", "system").replace("function", "list-functions?user="+user);
+            }
+
+            $.get(queryURL, function(data, status) {
                 $("#loading").remove();
                 
-
                 data = JSON.parse(data);
                 for(var i = 0; i < data.length; i++) {
                     var index = i;
@@ -108,8 +113,9 @@
                     } else {
                         url = baseURL + "/function/" + item.name;
                     }
-
-                    $("#items").append('<tr onClick="siteClicked(this)" data-url="'+url+'"><td>'+shortName+'</td><td>'+item.labels["Git-Repo"]+'</td><td><a href="'+url+'">Link</a></td><td>'+item.image.split("-")[1]+'</td><td>'+sinceDuration+'</td></tr>');
+                    var fullPath = item.labels["Git-Owner"] + "/" + item.labels["Git-Repo"];
+                    var repoLink = '<a href="https://github.com/' + fullPath + '">' + item.labels["Git-Repo"] + '</a>';
+                    $("#items").append('<tr data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"]+'</td><td>'+sinceDuration+'</td></tr>');
                 }
             });
         });
