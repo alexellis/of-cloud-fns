@@ -10,6 +10,7 @@ import (
 
 type UserData struct {
 	User           string
+	SelectedRepo   string
 	PublicURL      string
 	PrettyURL      string
 	QueryPrettyURL string
@@ -32,9 +33,12 @@ func Handle(req []byte) string {
 	vals, _ := url.ParseQuery(os.Getenv("Http_Query"))
 
 	user := vals.Get("user")
+	repo := vals.Get("repo")
 
 	userData1.User = user
-	log.Println("User: ", user)
+	userData1.SelectedRepo = repo
+
+	log.Println("User: ", user, " Repo: ", repo)
 
 	var tpl bytes.Buffer
 

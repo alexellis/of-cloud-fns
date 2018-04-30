@@ -79,6 +79,7 @@
         $(document).ready(function() {
             // injected via server templates
             var user = "{{.User}}";
+            var selectedRepo = "{{.SelectedRepo}}";
             var baseURL = "{{.PublicURL}}";
             var prettyDomain = "{{.PrettyURL}}";
             var queryPrettyURL = "{{.QueryPrettyURL}}";
@@ -114,8 +115,14 @@
                         url = baseURL + "/function/" + item.name;
                     }
                     var fullPath = item.labels["Git-Owner"] + "/" + item.labels["Git-Repo"];
-                    var repoLink = '<a href="https://github.com/' + fullPath + '">' + item.labels["Git-Repo"] + '</a>';
-                    $("#items").append('<tr data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"]+'</td><td>'+sinceDuration+'</td></tr>');
+                    var repoLink = '<a href="https://github.com/' + fullPath + '/commits/master">' + item.labels["Git-Repo"] + '</a>';
+
+                    var rowClass = "";
+                    if (item.labels["Git-Repo"] == selectedRepo) {
+                        rowClass = "class='warning'";
+                    }
+
+                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"]+'</td><td>'+sinceDuration+'</td></tr>');
                 }
             });
         });
