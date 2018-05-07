@@ -54,11 +54,15 @@
                     <th>Endpoint</th>
                     <th>SHA</th>
                     <th>Built</th>
+                    <th>Invocation Count</th>
+                    <th>Replicas</th>
                     </tr>
                 </thead>
                 <tbody id="items">
                     <tr id="loading">
                         <td>Loading...</td>
+                        <td></td>
+                        <td></td>
                         <td></td>
                         <td></td>
                         <td></td>
@@ -122,7 +126,7 @@
                         rowClass = "class='warning'";
                     }
 
-                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"]+'</td><td>'+sinceDuration+'</td></tr>');
+                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"]+'</td><td>'+sinceDuration+'</td><td>'+item.invocationCount+'</td><td>'+item.replicas+'</td></tr>');
                 }
             });
         });
