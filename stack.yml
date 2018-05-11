@@ -17,6 +17,6 @@ functions:
 
   system-list-functions:
     skip_build: true
-    image: alexellis2/list-functions:0.1
+    image: alexellis2/list-functions:0.4
     fprocess: ./handler
 
