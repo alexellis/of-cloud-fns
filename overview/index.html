@@ -46,30 +46,32 @@
             <p>
                 Welcome <span id="username" />
             </p>
-            <table class="table">
-                <thead>
-                    <tr>
-                    <th>Name</th>
-                    <th>Repo</th>
-                    <th>Endpoint</th>
-                    <th>SHA</th>
-                    <th>Built</th>
-                    <th>Invocation Count</th>
-                    <th>Replicas</th>
-                    </tr>
-                </thead>
-                <tbody id="items">
-                    <tr id="loading">
-                        <td>Loading...</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </tbody>    
-            </table>
+            <div class="table-responsive-sm table-responsive-md">
+                <table class="table">
+                    <thead>
+                        <tr>
+                        <th>Name</th>
+                        <th>Repo</th>
+                        <th>Endpoint</th>
+                        <th>SHA</th>
+                        <th>Built</th>
+                        <th>Invocation Count</th>
+                        <th>Replicas</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items">
+                        <tr id="loading">
+                            <td>Loading...</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>    
+                </table>
+            </div>
         </div>
     </div>
 
@@ -126,7 +128,7 @@
                         rowClass = "class='warning'";
                     }
 
-                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"]+'</td><td>'+sinceDuration+'</td><td>'+item.invocationCount+'</td><td>'+item.replicas+'</td></tr>');
+                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"].slice(0, 7)+'</td><td>'+sinceDuration+'</td><td>'+item.invocationCount+'</td><td>'+item.replicas+'</td></tr>');
                 }
             });
         });
