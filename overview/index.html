@@ -127,8 +127,13 @@
                     if (item.labels["Git-Repo"] == selectedRepo) {
                         rowClass = "class='warning'";
                     }
-
-                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+item.labels["Git-SHA"].slice(0, 7)+'</td><td>'+sinceDuration+'</td><td>'+item.invocationCount+'</td><td>'+item.replicas+'</td></tr>');
+                    var sha = item.labels["Git-SHA"];
+                    if(sha) {
+                        sha = sha.substr(0,7);
+                    } else {
+                        sha = "unknown";
+                    }
+                    $("#items").append('<tr '+rowClass+' data-url="'+url+'"><td>'+shortName+'</td><td>'+ repoLink +'</td><td><a href="'+url+'">Link</a></td><td>'+sha+'</td><td>'+sinceDuration+'</td><td>'+item.invocationCount+'</td><td>'+item.replicas+'</td></tr>');
                 }
             });
         });
